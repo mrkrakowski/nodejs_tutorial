@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/mrkrakowski/nodejs_tutorial/issues"
   },
-  "homepage": "https://github.com/mrkrakowski/nodejs_tutorial#readme"
+  "homepage": "https://github.com/mrkrakowski/nodejs_tutorial#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
