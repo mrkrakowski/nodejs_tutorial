@@ -33,17 +33,38 @@ const { readFile } = require('fs').promises;
 
 app.get('/home', async (request, response) => {
 
-    response.send( await readFile('./home.html', 'utf8') );
+    response.send(await readFile('./home.html', 'utf8'));
 
 });
 
 app.post('/calculate', async (request, response) => {
 
     console.log(request.body);
-    response.json({
-        message:"Hello world"
-    });
-
+    if (request.body.operator == "add") {
+        response.json({
+            calculation: request.body.a + request.body.b
+        });
+    }
+    else if (request.body.operator == "subtract") {
+        response.json({
+            calculation: request.body.a - request.body.b
+        });
+    }
+    else if (request.body.operator == "multiply") {
+        response.json({
+            calculation: request.body.a * request.body.b
+        });
+    }
+    else if (request.body.operator == "divide") {
+        response.json({
+            calculation: request.body.a / request.body.b
+        });
+    }
+    else {
+        response.json({
+            calculation:"Error: invalid operator."
+        });
+    }
 });
 
 
