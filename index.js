@@ -52,7 +52,7 @@ const myModule = require('./my-module.js');
 console.log(myModule); //Even this happens before the second reading of hello.txt
 
 const express = require('express');
-const { valid } = require('joi');
+
 const app = express();
 app.use(express.json());
 const { readFile } = require('fs').promises;
