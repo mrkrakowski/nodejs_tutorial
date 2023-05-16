@@ -42,22 +42,22 @@ app.post('/calculate', async (request, response) => {
     console.log(request.body);
     if (request.body.operator == "add") {
         response.json({
-            calculation: request.body.a + request.body.b
+            result: request.body.a + request.body.b
         });
     }
     else if (request.body.operator == "subtract") {
         response.json({
-            calculation: request.body.a - request.body.b
+            result: request.body.a - request.body.b
         });
     }
     else if (request.body.operator == "multiply") {
         response.json({
-            calculation: request.body.a * request.body.b
+            result: request.body.a * request.body.b
         });
     }
     else if (request.body.operator == "divide") {
         response.json({
-            calculation: request.body.a / request.body.b
+            result: request.body.a / request.body.b
         });
     }
     else {
