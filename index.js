@@ -27,6 +27,7 @@ const myModule = require('./my-module.js');
 console.log(myModule); //Even this happens before the second reading of hello.txt
 
 const express = require('express');
+const { valid } = require('joi');
 const app = express();
 app.use(express.json());
 const { readFile } = require('fs').promises;
@@ -40,30 +41,37 @@ app.get('/home', async (request, response) => {
 app.post('/calculate', async (request, response) => {
 
     console.log(request.body);
-    if (request.body.operator == "add") {
-        response.json({
-            result: request.body.a + request.body.b
-        });
+    op = request.body.operator;
+    a = request.body.a;
+    b = request.body.b;
+    valid_operation = false;
+    calculation=-1;
+
+    if (op === "add") {//checks for what request.body.operator is set to
+        calculation = a + b;//performs the correct operation
+        valid_operation = true;
     }
-    else if (request.body.operator == "subtract") {
-        response.json({
-            result: request.body.a - request.body.b
-        });
+    else if (op === "subtract") {
+        calculation = a - b;
+        valid_operation = true;
     }
-    else if (request.body.operator == "multiply") {
-        response.json({
-            result: request.body.a * request.body.b
-        });
+    else if (op === "multiply") {
+        calculation = a * b;
+        valid_operation = true;
     }
-    else if (request.body.operator == "divide") {
+    else if (op === "divide") {
+        calculation = a / b;
+        valid_operation = true;
+    }
+    if (valid_operation) {
         response.json({
-            result: request.body.a / request.body.b
+            result:calculation
         });
     }
     else {
         response.json({
-            calculation:"Error: invalid operator."
-        });
+            result:"Error: invalid operator."
+        })
     }
 });
 
