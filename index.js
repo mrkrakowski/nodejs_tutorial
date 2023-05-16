@@ -1,3 +1,26 @@
+function doMath(a, b, operator) {
+    let calculation = -1;
+    let validOperation = false;
+    if (operator === "add") {//checks for what request.body.operator is set to
+        calculation = a + b;//performs the correct operation
+        validOperation = true;
+    }
+    else if (operator === "subtract") {
+        calculation = a - b;
+        validOperation = true;
+    }
+    else if (operator === "multiply") {
+        calculation = a * b;
+        validOperation = true;
+    }
+    else if (operator === "divide") {
+        calculation = a / b;
+        validOperation = true;
+    }
+    return [calculation, validOperation];
+
+}
+
 global.luckynum = '23';
 
 console.log(global.luckynum);
@@ -42,25 +65,7 @@ app.post('/calculate', async (request, response) => {
 
     console.log(request.body);
     const { a, b, operator } = request.body;
-    let validOperation = false;
-    let calculation = -1;
-
-    if (operator === "add") {//checks for what request.body.operator is set to
-        calculation = a + b;//performs the correct operation
-        validOperation = true;
-    }
-    else if (operator === "subtract") {
-        calculation = a - b;
-        validOperation = true;
-    }
-    else if (operator === "multiply") {
-        calculation = a * b;
-        validOperation = true;
-    }
-    else if (operator === "divide") {
-        calculation = a / b;
-        validOperation = true;
-    }
+    const [calculation, validOperation] = doMath(a, b, operator);
     if (validOperation) {
         response.json({
             result: calculation
