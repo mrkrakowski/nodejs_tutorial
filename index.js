@@ -41,36 +41,36 @@ app.get('/home', async (request, response) => {
 app.post('/calculate', async (request, response) => {
 
     console.log(request.body);
-    op = request.body.operator;
-    a = request.body.a;
-    b = request.body.b;
-    valid_operation = false;
-    calculation=-1;
+    const op = request.body.operator;
+    const a = request.body.a;
+    const b = request.body.b;
+    let validOperation = false;
+    let calculation = -1;
 
     if (op === "add") {//checks for what request.body.operator is set to
         calculation = a + b;//performs the correct operation
-        valid_operation = true;
+        validOperation = true;
     }
     else if (op === "subtract") {
         calculation = a - b;
-        valid_operation = true;
+        validOperation = true;
     }
     else if (op === "multiply") {
         calculation = a * b;
-        valid_operation = true;
+        validOperation = true;
     }
     else if (op === "divide") {
         calculation = a / b;
-        valid_operation = true;
+        validOperation = true;
     }
-    if (valid_operation) {
+    if (validOperation) {
         response.json({
-            result:calculation
+            result: calculation
         });
     }
     else {
         response.json({
-            result:"Error: invalid operator."
+            result: "Error: invalid operator."
         })
     }
 });
