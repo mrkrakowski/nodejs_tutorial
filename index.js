@@ -41,25 +41,23 @@ app.get('/home', async (request, response) => {
 app.post('/calculate', async (request, response) => {
 
     console.log(request.body);
-    const op = request.body.operator;
-    const a = request.body.a;
-    const b = request.body.b;
+    const { a, b, operator } = request.body;
     let validOperation = false;
     let calculation = -1;
 
-    if (op === "add") {//checks for what request.body.operator is set to
+    if (operator === "add") {//checks for what request.body.operator is set to
         calculation = a + b;//performs the correct operation
         validOperation = true;
     }
-    else if (op === "subtract") {
+    else if (operator === "subtract") {
         calculation = a - b;
         validOperation = true;
     }
-    else if (op === "multiply") {
+    else if (operator === "multiply") {
         calculation = a * b;
         validOperation = true;
     }
-    else if (op === "divide") {
+    else if (operator === "divide") {
         calculation = a / b;
         validOperation = true;
     }
