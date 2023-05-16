@@ -17,8 +17,10 @@ function doMath(a, b, operator) {
         calculation = a / b;
         validOperation = true;
     }
-    return [calculation, validOperation];
-
+    return {
+        calculation,
+        validOperation
+    };
 }
 
 global.luckynum = '23';
@@ -65,7 +67,7 @@ app.post('/calculate', async (request, response) => {
 
     console.log(request.body);
     const { a, b, operator } = request.body;
-    const [calculation, validOperation] = doMath(a, b, operator);
+    const { calculation, validOperation } = doMath(a, b, operator);
     if (validOperation) {
         response.json({
             result: calculation
