@@ -28,13 +28,24 @@ console.log(myModule); //Even this happens before the second reading of hello.tx
 
 const express = require('express');
 const app = express();
+app.use(express.json());
 const { readFile } = require('fs').promises;
 
-app.get('/', async (request, response) => {
+app.get('/home', async (request, response) => {
 
     response.send( await readFile('./home.html', 'utf8') );
 
 });
+
+app.post('/calculate', async (request, response) => {
+
+    console.log(request.body);
+    response.json({
+        message:"Hello world"
+    });
+
+});
+
 
 app.listen(process.env.PORT || 3000, () => console.log(`App available on http://localhost:3000`))
 
