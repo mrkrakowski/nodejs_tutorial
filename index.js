@@ -26,21 +26,17 @@ function doMath(a, b, operator) {
 const url2 = 'https://api.nasa.gov/planetary/earth/assets';
 const axios = require('axios');
 async function getNASA(request) {
-    try {
-        const result = await axios.get(url2, {
-            params: {
-                lon: '-93.19591',
-                lat: '45.23574',
-                date: '2021-06-01',
-                dim: '0.02',
-                api_key: 'NIyGQ2F4JMu4PsxISGrbTXursdobclmPJe40ycFh'
-            }
-        });
-        return result;
-    } catch (err) {
-        return err;
-    };
-}
+    const result = await axios.get(url2, {
+        params: {
+            lon: '-93.19591',
+            lat: '45.23574',
+            date: '2021-06-01',
+            dim: '0.02',
+            api_key: 'NIyGQ2F4JMu4PsxISGrbTXursdobclmPJe40ycFh'
+        }
+    });
+    return result;
+};
 
 global.luckynum = '23';
 
@@ -101,8 +97,14 @@ app.post('/calculate', async (request, response) => {
 app.post('/nasaAPI', async (request, response) => {
     console.log("Entered info is discarded, take a look at my house instead:")
     console.log(request.query);
-    const res = await getNASA(request);
-    response.json(res.data);
+    try {
+        const res = await getNASA(request);
+        response.json(res.data);
+
+    } catch (err) {
+        console.log(err);
+        response.json(err);
+    }
 });
 
 //app.post('/nasaAPI', async (request, response) => {
