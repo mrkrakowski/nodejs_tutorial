@@ -23,6 +23,10 @@ function doMath(a, b, operator) {
     };
 }
 
+function getNASA() {
+
+}
+
 global.luckynum = '23';
 
 console.log(global.luckynum);
@@ -51,6 +55,7 @@ eventEmitter.emit('lunch');
 const myModule = require('./my-module.js');
 console.log(myModule); //Even this happens before the second reading of hello.txt
 
+const axios = require('axios');
 const express = require('express');
 const app = express();
 app.use(express.json());
@@ -78,6 +83,31 @@ app.post('/calculate', async (request, response) => {
         })
     }
 });
+
+const url2 = 'https://api.nasa.gov/planetary/earth/assets';
+app.post('/nasaAPI', async (request, response) => {
+    console.log('request does not matter, giving my house instead');
+    try {
+        const result = await axios.get(url2, {
+            params: {
+                lon: '-93.19591',
+                lat: '45.23574',
+                date: '2021-06-01',
+                dim: '0.02',
+                api_key: 'NIyGQ2F4JMu4PsxISGrbTXursdobclmPJe40ycFh'
+            }
+        }
+        );
+        response.json({result:2});
+    } catch (err) {
+        console.log(err);
+    };
+});
+
+//app.post('/nasaAPI', async (request, response) => {
+//    console.log(request.body);
+//    console.log(response.body);
+//})
 
 
 app.listen(process.env.PORT || 3000, () => console.log(`App available on http://localhost:3000`))
