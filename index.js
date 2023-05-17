@@ -28,11 +28,11 @@ const axios = require('axios');
 async function getNASA(request) {
     const result = await axios.get(url2, {
         params: {
-            lon: '-93.19591',
-            lat: '45.23574',
-            date: '2021-06-01',
-            dim: '0.02',
-            api_key: 'NIyGQ2F4JMu4PsxISGrbTXursdobclmPJe40ycFh'
+            lon: request.query.lon,
+            lat: request.query.lat,
+            date: request.query.date,
+            dim: request.query.dim, 
+            api_key: request.query.api_key
         }
     });
     return result;
@@ -95,14 +95,11 @@ app.post('/calculate', async (request, response) => {
 });
 
 app.post('/nasaAPI', async (request, response) => {
-    console.log("Entered info is discarded, take a look at my house instead:")
-    console.log(request.query);
     try {
         const res = await getNASA(request);
         response.json(res.data);
 
     } catch (err) {
-        console.log(err);
         response.json(err);
     }
 });
