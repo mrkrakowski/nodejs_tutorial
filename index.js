@@ -120,6 +120,7 @@ app.post('/getImage', async (request, response) => {
 app.post('/infoToImage', async (request, response) => {
     try {
         const imgData = await getNASA(request);
+        console.log(imgData.data.url);
         const res = await getImage(imgData.data.url)
         res.data.pipe(response);
     } catch (err) {
