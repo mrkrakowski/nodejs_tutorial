@@ -28,11 +28,11 @@ const axios = require('axios');
 async function getNASA(request) {
     const result = await axios.get(url2, {
         params: {
-            lon: request.query.lon,
-            lat: request.query.lat,
-            date: request.query.date,
-            dim: request.query.dim, 
-            api_key: request.query.api_key
+            lon: request.body.lon,
+            lat: request.body.lat,
+            date: request.body.date,
+            dim: request.body.dim, 
+            api_key: request.body.api_key
         }
     });
     return result;
@@ -98,17 +98,9 @@ app.post('/nasaAPI', async (request, response) => {
     try {
         const res = await getNASA(request);
         response.json(res.data);
-
     } catch (err) {
         response.json(err);
     }
 });
 
-//app.post('/nasaAPI', async (request, response) => {
-//    console.log(request.body);
-//    console.log(response.body);
-//})
-
-
 app.listen(process.env.PORT || 3000, () => console.log(`App available on http://localhost:3000`))
-
