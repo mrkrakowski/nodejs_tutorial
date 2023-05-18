@@ -105,13 +105,23 @@ app.post('/nasaImageData', async (request, response) => {
 
 app.post('/getImage', async (request, response) => {
     try {
-        console.log(request.body.url);
-        //const res = await axios.get(req.body.url);
-        res = await axios({
-            method: 'get',
-            url: request.body.url,
-            responseType: 'stream'
-        });
+        const res = await axios.get(request.body.url, { responseType: 'stream'});
+        res.data.pipe(response);
+    } catch (err) {
+        console.log("something went wrong");
+        response.json(err);
+    }
+});
+
+app.post('/infoToImage', async(request, response) => {
+    try {
+        console.log(request.body.url, { responseType: 'stream'});
+        const res = await axios.get(request.body.url, { responseType: 'stream'});
+        // constres = await axios({
+        //     method: 'get',
+        //     url: request.body.url,
+        //     responseType: 'stream'
+        // });
         res.data.pipe(response);
     } catch (err) {
         console.log("something went wrong");
