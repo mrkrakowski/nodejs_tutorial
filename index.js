@@ -38,6 +38,10 @@ async function getNASA(request) {
     return result;
 };
 
+async function getImage(url) {
+    return await axios.get(url, { responseType: 'stream'});
+};
+
 global.luckynum = '23';
 
 console.log(global.luckynum);
@@ -105,7 +109,7 @@ app.post('/nasaImageData', async (request, response) => {
 
 app.post('/getImage', async (request, response) => {
     try {
-        const res = await axios.get(request.body.url, { responseType: 'stream'});
+        const res = await getImage(request.body.url);
         res.data.pipe(response);
     } catch (err) {
         console.log("something went wrong");
@@ -113,15 +117,10 @@ app.post('/getImage', async (request, response) => {
     }
 });
 
-app.post('/infoToImage', async(request, response) => {
+app.post('/infoToImage', async (request, response) => {
     try {
-        console.log(request.body.url, { responseType: 'stream'});
-        const res = await axios.get(request.body.url, { responseType: 'stream'});
-        // constres = await axios({
-        //     method: 'get',
-        //     url: request.body.url,
-        //     responseType: 'stream'
-        // });
+        const imgData = await getNASA(request);
+        const res = await getImage(imgData.data.url)
         res.data.pipe(response);
     } catch (err) {
         console.log("something went wrong");
