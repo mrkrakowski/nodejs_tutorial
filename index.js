@@ -103,21 +103,19 @@ app.post('/nasaImageData', async (request, response) => {
     }
 });
 
-app.post('/getImage', (req, res) => {
+app.post('/getImage', async (request, response) => {
     try {
-        console.log(req.body.url);
+        console.log(request.body.url);
         //const res = await axios.get(req.body.url);
-        axios({
+        res = await axios({
             method: 'get',
-            url: req.body.url,
+            url: request.body.url,
             responseType: 'stream'
-          })
-            .then(function(response) {
-              response.data.pipe(res)
-          });
+        });
+        res.data.pipe(response);
     } catch (err) {
         console.log("something went wrong");
-        res.json(err);
+        response.json(err);
     }
 });
 
