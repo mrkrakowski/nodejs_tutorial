@@ -31,8 +31,8 @@ async function getNASA(request) {
             lon: request.body.lon,
             lat: request.body.lat,
             date: request.body.date,
-            dim: request.body.dim, 
-            api_key: request.body.api_key
+            dim: request.body.dim,
+            api_key: request.headers.api_key
         }
     });
     return result;
