@@ -94,11 +94,27 @@ app.post('/calculate', async (request, response) => {
     }
 });
 
-app.post('/nasaAPI', async (request, response) => {
+app.post('/nasaImageData', async (request, response) => {
     try {
         const res = await getNASA(request);
         response.json(res.data);
     } catch (err) {
+        response.json(err);
+    }
+});
+
+app.post('/getImage', async (request, response) => {
+    try {
+        console.log(request.body.url);
+        const res = await axios.get(request.body.url);
+        response.send(Buffer.from(res.data, 'binary'));
+        // response.writeHead(200, {//This didn't work
+        //     'Content-Type': 'image',
+        //     'Content-Length': res.data.length
+        // });
+        // response.end(Buffer.from(res.data, 'binary'));
+    } catch (err) {
+        console.log("something went wrong");
         response.json(err);
     }
 });
