@@ -23,10 +23,10 @@ function doMath(a, b, operator) {
     };
 }
 
-const url2 = 'https://api.nasa.gov/planetary/earth/assets';
+const nasaAssetURL = 'https://api.nasa.gov/planetary/earth/assets';
 const axios = require('axios');
-async function getNASA(request) {
-    const result = await axios.get(url2, {
+async function getSatelliteImageInfo(request) {
+    const result = await axios.get(nasaAssetURL, {
         params: {
             lon: request.body.lon,
             lat: request.body.lat,
@@ -38,8 +38,8 @@ async function getNASA(request) {
     return result;
 };
 
-async function getImage(url) {
-    return await axios.get(url, { responseType: 'stream'});
+async function downloadImage(url) {
+    return await axios.get(url, { responseType: 'stream' });
 };
 
 global.luckynum = '23';
@@ -100,31 +100,34 @@ app.post('/calculate', async (request, response) => {
 
 app.post('/nasaImageData', async (request, response) => {
     try {
-        const res = await getNASA(request);
+        const res = await getSatelliteImageInfo(request);
         response.json(res.data);
     } catch (err) {
+        response.status(err.response.status);
         response.json(err);
     }
 });
 
 app.post('/getImage', async (request, response) => {
     try {
-        const res = await getImage(request.body.url);
+        const res = await downloadImage(request.body.url);
         res.data.pipe(response);
     } catch (err) {
         console.log("something went wrong");
+        response.status(err.response.status);
         response.json(err);
     }
 });
 
 app.post('/infoToImage', async (request, response) => {
     try {
-        const imgData = await getNASA(request);
+        const imgData = await getSatelliteImageInfo(request);
         console.log(imgData.data.url);
-        const res = await getImage(imgData.data.url)
+        const res = await downloadImage(imgData.data.url);
         res.data.pipe(response);
     } catch (err) {
         console.log("something went wrong");
+        response.status(err.response.status);
         response.json(err);
     }
 });
