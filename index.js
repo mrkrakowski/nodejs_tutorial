@@ -23,6 +23,25 @@ function doMath(a, b, operator) {
     };
 }
 
+const nasaAssetURL = 'https://api.nasa.gov/planetary/earth/assets';
+const axios = require('axios');
+async function getSatelliteImageInfo(request) {
+    const result = await axios.get(nasaAssetURL, {
+        params: {
+            lon: request.body.lon,
+            lat: request.body.lat,
+            date: request.body.date,
+            dim: request.body.dim,
+            api_key: request.headers.api_key
+        }
+    });
+    return result;
+};
+
+async function downloadImage(url) {
+    return await axios.get(url, { responseType: 'stream' });
+};
+
 global.luckynum = '23';
 
 console.log(global.luckynum);
@@ -79,6 +98,38 @@ app.post('/calculate', async (request, response) => {
     }
 });
 
+app.post('/nasaImageData', async (request, response) => {
+    try {
+        const res = await getSatelliteImageInfo(request);
+        response.json(res.data);
+    } catch (err) {
+        response.status(err.response.status);
+        response.json(err);
+    }
+});
+
+app.post('/getImage', async (request, response) => {
+    try {
+        const res = await downloadImage(request.body.url);
+        res.data.pipe(response);
+    } catch (err) {
+        console.log("something went wrong");
+        response.status(err.response.status);
+        response.json(err);
+    }
+});
+
+app.post('/infoToImage', async (request, response) => {
+    try {
+        const imgData = await getSatelliteImageInfo(request);
+        console.log(imgData.data.url);
+        const res = await downloadImage(imgData.data.url);
+        res.data.pipe(response);
+    } catch (err) {
+        console.log("something went wrong");
+        response.status(err.response.status);
+        response.json(err);
+    }
+});
 
 app.listen(process.env.PORT || 3000, () => console.log(`App available on http://localhost:3000`))
-
